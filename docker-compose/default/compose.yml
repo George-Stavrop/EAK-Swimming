@@ -1,0 +1,221 @@
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - ../../mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql_data:/var/lib/mysql
+    networks:
+      - eakswimming
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  rabbit:
+    image: rabbitmq:4.0-management
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    extends:
+      file: ../common-config.yml
+      service: network-deploy-service
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.4.7
+    container_name: keycloak
+    ports:
+      - "7080:8080"
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: "admin"
+      KC_BOOTSTRAP_ADMIN_PASSWORD: "admin"
+    volumes:
+      - ./keycloak/realm-export.json:/opt/keycloak/data/import/master-realm.json
+    command: "start-dev --import-realm"
+    networks:
+     - eakswimming
+
+
+  configserver:
+    image: "georgeestav/config-server:v1.2"
+    container_name: configserver
+    ports:
+      - "8071:8071"
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -qO- http://localhost:8071/actuator/health/readiness | grep UP || exit 1" ]
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    extends:
+      file: ../common-config.yml
+      service: microservice-base-config
+
+
+  eurekaserver:
+    image: "georgeestav/eureka-server:v1.2"
+    container_name: eurekaserver
+    ports:
+      - "8070:8070"
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -qO- http://localhost:8070/actuator/health | grep UP || exit 1" ]
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    extends:
+      file: ../common-config.yml
+      service: microservice-base-config
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CLOUD_CONFIG_ENABLED: "false"
+      SPRING_APPLICATION_NAME: "eurekaserver"
+
+  membership-service:
+    image: "georgeestav/membership-service:v2.1"
+    container_name: membership-service
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health/readiness | grep UP || exit 1" ]
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    extends:
+      file: ../common-config.yml
+      service: microservice-base-config
+    depends_on:
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+      rabbit:
+        condition: service_healthy
+      mysql-db:
+        condition: service_healthy
+    environment:
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071"
+      SPRING_PROFILES_ACTIVE: prod
+      DB_USER: membership_user
+      DB_PW: membership
+
+
+  subscription-service:
+    image: "georgeestav/subscription-service:v2.1"
+    container_name: subscription-service
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -qO- http://localhost:8090/actuator/health/readiness | grep UP || exit 1" ]
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    extends:
+      file: ../common-config.yml
+      service: microservice-base-config
+    depends_on:
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+      rabbit:
+        condition: service_healthy
+      mysql-db:
+        condition: service_healthy
+    environment:
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071"
+      SPRING_PROFILES_ACTIVE: prod
+      DB_USER: subscription_user
+      DB_PW: subscription
+
+  access-service:
+    image: "georgeestav/access-service:v2.1"
+    container_name: access-service
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -qO- http://localhost:9000/actuator/health/readiness | grep UP || exit 1" ]
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    extends:
+      file: ../common-config.yml
+      service: microservice-base-config
+    depends_on:
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+      rabbit:
+        condition: service_healthy
+      mysql-db:
+        condition: service_healthy
+    environment:
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071"
+      SPRING_PROFILES_ACTIVE: prod
+      DB_USER: access_user
+      DB_PW: access
+
+  gatewayserver:
+    image: "georgeestav/gatewayserver:v1.2"
+    container_name: gatewayserver-ms
+    ports:
+      - "8072:8072"
+    extends:
+      file: ../common-config.yml
+      service: microservice-base-config
+    depends_on:
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
+    environment:
+      SPRING_APPLICATION_NAME: "gatewayserver"
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://configserver:8071"
+
+
+  message-service:
+    image: "georgeestav/message-service:v2.1"
+    container_name: message-ms
+    ports:
+      - "9010"
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -qO- http://localhost:9010/actuator/health/readiness | grep UP || exit 1" ]
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    depends_on:
+      configserver:
+        condition: service_healthy
+      rabbit:
+        condition: service_healthy
+    extends:
+      file: ../common-config.yml
+      service: microservice-base-config
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071"
+      GMAIL_USER: evanthiakatsioula@gmail.com
+      GMAIL_PW: "iolalpjqdbpiipmv"
+
+
+volumes:
+  mysql_data:
+
+networks:
+  eakswimming:
+    driver: "bridge"
+

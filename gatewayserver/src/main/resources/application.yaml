@@ -1,0 +1,13 @@
+
+spring:
+  application:
+    name: "gatewayserver"
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+
+info:
+  app:
+    name: "gatewayserver"
+    description: "EAK Swimming Gateway Server Application"
+    version: "1.0.0"
+

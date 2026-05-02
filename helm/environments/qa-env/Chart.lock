@@ -1,0 +1,27 @@
+dependencies:
+- name: eak-common
+  repository: file://../../eak-common
+  version: 0.1.0
+- name: configserver
+  repository: file://../../eak-services/configserver
+  version: 0.1.0
+- name: eurekaserver
+  repository: file://../../eak-services/eurekaserver
+  version: 0.1.0
+- name: membership-service
+  repository: file://../../eak-services/membership-service
+  version: 0.1.0
+- name: subscription-service
+  repository: file://../../eak-services/subscription-service
+  version: 0.1.0
+- name: access-service
+  repository: file://../../eak-services/access-service
+  version: 0.1.0
+- name: gatewayserver
+  repository: file://../../eak-services/gatewayserver
+  version: 0.1.0
+- name: message-service
+  repository: file://../../eak-services/message-service
+  version: 0.1.0
+digest: sha256:3d5c3e2c9ba6132813ab164b54a003f8d14536a1fad75afd8cdd4bce2f7c42d7
+generated: "2026-03-30T15:45:28.848880691+03:00"

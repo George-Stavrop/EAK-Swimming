@@ -1,0 +1,6 @@
+dependencies:
+- name: eak-common
+  repository: file://../../eak-common
+  version: 0.1.0
+digest: sha256:363acbf4006382d7833100c32286a0b4441e67f1bd8f3bed94828a4ccdf253e7
+generated: "2026-03-30T15:14:48.917662154+03:00"

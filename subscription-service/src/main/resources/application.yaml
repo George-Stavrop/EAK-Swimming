@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: subscription-service
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+
+
+info:
+  app:
+    name: "subscription-service"
+    description: "EAK Swimming Subscription Application"
+    version: "1.0.0"
+
+

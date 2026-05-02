@@ -1,0 +1,28 @@
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+deploymentName: membership-service-deployment
+serviceName: membership-service
+appLabel: membership-service
+appName: membership-service
+
+replicaCount: 1
+
+image:
+  repository: georgeestav/membership-service
+  tag: v2.0
+
+containerPort: 8080
+
+service:
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+
+appname_enabled: true
+profile_enabled: true
+config_enabled: true
+eureka_enabled: true
+resourceserver_enabled: false
+otel_enabled: false
+rabbitmq_enabled: false

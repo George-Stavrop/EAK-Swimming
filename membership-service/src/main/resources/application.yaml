@@ -1,0 +1,17 @@
+
+spring:
+  application:
+    name: "membership-service"
+
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+
+
+#Info for Eureka Dashboard from the actuator
+info:
+  app:
+    name: "membership-service"
+    description: "EAK Swimming Membership Application"
+    version: "1.0.0"
+
+

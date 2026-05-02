@@ -1,0 +1,179 @@
+services:
+  rabbit:
+    image: rabbitmq:4.0-management
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    extends:
+      file: ../common-config.yml
+      service: network-deploy-service
+
+
+
+  configserver:
+    image: "georgeestav/config-server:latest"
+    container_name: configserver
+    ports:
+      - "8071:8071"
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -qO- http://localhost:8071/actuator/health/readiness | grep UP || exit 1" ]
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    extends:
+      file: ../common-config.yml
+      service: microservice-base-config
+
+  eurekaserver:
+    image: "georgeestav/eureka-server:latest"
+    container_name: eurekaserver
+    ports:
+      - "8070:8070"
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -qO- http://localhost:8070/actuator/health | grep UP || exit 1" ]
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    extends:
+      file: ../common-config.yml
+      service: microservice-base-config
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CLOUD_CONFIG_ENABLED: "false"
+      SPRING_CONFIG_IMPORT: ""
+      SPRING_APPLICATION_NAME: "eurekaserver"
+
+
+  membership-service:
+    image: "georgeestav/membership-service:latest"
+    container_name: membership-service
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health/readiness | grep UP || exit 1" ]
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    extends:
+      file: ../common-config.yml
+      service: microservice-base-config
+    depends_on:
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+      rabbit:
+        condition: service_healthy
+    environment:
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071"
+      SPRING_PROFILES_ACTIVE: default
+
+
+  subscription-service:
+    image: "georgeestav/subscription-service:latest"
+    container_name: subscription-service
+    ports:
+      - "8090:8090"
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -qO- http://localhost:8090/actuator/health/readiness | grep UP || exit 1" ]
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    extends:
+      file: ../common-config.yml
+      service: microservice-base-config
+    depends_on:
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+      rabbit:
+        condition: service_healthy
+    environment:
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071"
+      SPRING_PROFILES_ACTIVE: default
+
+  access-service:
+    image: "georgeestav/access-service:latest"
+    container_name: access-service
+    ports:
+      - "9000:9000"
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -qO- http://localhost:9000/actuator/health/readiness | grep UP || exit 1" ]
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    extends:
+      file: ../common-config.yml
+      service: microservice-base-config
+    depends_on:
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+      rabbit:
+        condition: service_healthy
+    environment:
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071"
+      SPRING_PROFILES_ACTIVE: default
+
+  gatewayserver:
+    image: "georgeestav/gatewayserver:latest"
+    container_name: gatewayserver-ms
+    ports:
+      - "8072:8072"
+    depends_on:
+      configserver:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+    extends:
+      file: ../common-config.yml
+      service: microservice-base-config
+    environment:
+      SPRING_APPLICATION_NAME: "gatewayserver"
+      SPRING_PROFILES_ACTIVE: dev   #disables security, no keycloak
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://configserver:8071"
+
+  message-service:
+    image: "georgeestav/message-service:latest"
+    container_name: message-ms
+    ports:
+        - "9010:9010"
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -qO- http://localhost:9010/actuator/health/readiness | grep UP || exit 1" ]
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    depends_on:
+      configserver:
+        condition: service_healthy
+      rabbit:
+        condition: service_healthy
+    extends:
+      file: ../common-config.yml
+      service: microservice-base-config
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: "configserver:http://configserver:8071"
+      GMAIL_USER: evanthiakatsioula@gmail.com
+      GMAIL_PW: "iolalpjqdbpiipmv"
+
+
+
+networks:
+  eakswimming:
+    driver: "bridge"

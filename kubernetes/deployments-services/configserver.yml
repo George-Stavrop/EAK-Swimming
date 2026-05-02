@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: configserver-deployment
+  labels:
+    app: configserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: configserver
+  template:
+    metadata:
+      labels:
+        app: configserver
+    spec:
+      containers:
+        - name: configserver
+          image: georgeestav/configserver:v1.1
+          ports:
+            - containerPort: 8071
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: configserver-np
+spec:
+  selector:
+    app: configserver
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8071
+      targetPort: 8071
+      nodePort: 30071
+
+

@@ -1,0 +1,32 @@
+global:
+  configMapName: eak-configmap
+  activeProfile: default
+  configServerURL: configserver:http://configserver:8071/
+  eurekaServerURL: http://eurekaserver:8070/eureka/
+  keyCloakURL: http://keycloak.default.svc.cluster.local:80/realms/master/protocol/openid-connect/certs
+#  openTelemetryJavaAgent: "-javaagent:/app/libs/opentelemetry-javaagent-2.22.0.jar"
+#  otelExporterEndPoint: http://tempo.default.svc.cluster.local:4318
+#  otelMetricsExporter: none
+#  otelLogsExporter: none
+#  rabbitmqHost: rabbitmq
+#  rabbitmqPort: "5672"
+#  rabbitmqUsername: guest
+#  rabbitmqPassword: guest
+
+#rabbitmq:
+#  auth:
+#    username: guest
+#    password: guest
+#    erlangCookie: "secretcookie"
+#  persistence:
+#    enabled: true
+#    size: 1Gi
+#  service:
+#    type: ClusterIP
+#  resources:
+#    requests:
+#      memory: "256Mi"
+#      cpu: "100m"
+#    limits:
+#      memory: "512Mi"
+#      cpu: "500m"

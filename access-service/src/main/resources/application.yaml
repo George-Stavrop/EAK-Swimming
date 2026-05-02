@@ -1,0 +1,14 @@
+
+spring:
+  application:
+    name: "access-service"
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+
+
+info:
+  app:
+    name: "access-service"
+    description: "EAK Swimming Access Application"
+    version: "1.0.0"
+
