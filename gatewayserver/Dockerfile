@@ -1,7 +1,7 @@
 # Stage 1
 FROM eclipse-temurin:21-jre-alpine AS builder
 WORKDIR application
-COPY target/gatewayserver-0.0.1-SNAPSHOT.jar application.jar
+COPY target/*.jar application.jar
 
 RUN java -Djarmode=layertools -jar application.jar extract
 
