@@ -49,7 +49,7 @@ services:
 
 
   configserver:
-    image: "georgeestav/config-server:v1.2"
+    image: "georgeestav/configserver:v1.2"
     container_name: configserver
     ports:
       - "8071:8071"
@@ -65,7 +65,7 @@ services:
 
 
   eurekaserver:
-    image: "georgeestav/eureka-server:v1.2"
+    image: "georgeestav/eurekaserver:v1.2"
     container_name: eurekaserver
     ports:
       - "8070:8070"

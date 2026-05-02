@@ -18,7 +18,7 @@ services:
 
 
   configserver:
-    image: "georgeestav/config-server:latest"
+    image: "georgeestav/configserver:latest"
     container_name: configserver
     ports:
       - "8071:8071"
@@ -33,7 +33,7 @@ services:
       service: microservice-base-config
 
   eurekaserver:
-    image: "georgeestav/eureka-server:latest"
+    image: "georgeestav/eurekaserver:latest"
     container_name: eurekaserver
     ports:
       - "8070:8070"
