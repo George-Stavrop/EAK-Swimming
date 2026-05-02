@@ -22,11 +22,12 @@ jobs:
           cache: maven
 
       - name: Install BOM
-        run: mvn clean install -pl eak-bom -DskipTests
-
+        working-directory: eak-bom
+        run: mvn clean install -DskipTests
 
       - name: Build and Test
-        run: mvn clean verify -pl subscription-service
+        working-directory: subscription-service
+        run: mvn clean verify
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
