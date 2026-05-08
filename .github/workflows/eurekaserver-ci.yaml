@@ -37,9 +37,9 @@ jobs:
 
       - name: Build and Push Docker image
         run: |
-          docker build -t georgeestav/eurekaserver:${{ github.sha }} ./eurekaserver
+          docker build -t georgeestav/eureka-server:${{ github.sha }} ./eurekaserver
           
-          docker tag georgeestav/eurekaserver:${{ github.sha }} georgeestav/eurekaserver:latest
+          docker tag georgeestav/eureka-server:${{ github.sha }} georgeestav/eurekaserver:latest
           
-          docker push georgeestav/eurekaserver:${{ github.sha }}
-          docker push georgeestav/eurekaserver:latest
+          docker push georgeestav/eureka-server:${{ github.sha }}
+          docker push georgeestav/eureka-server:latest

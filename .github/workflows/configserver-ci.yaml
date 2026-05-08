@@ -38,9 +38,9 @@ jobs:
 
       - name: Build and Push Docker image
         run: |
-          docker build -t georgeestav/configserver:${{ github.sha }} ./configserver
+          docker build -t georgeestav/config-server:${{ github.sha }} ./configserver
           
-          docker tag georgeestav/configserver:${{ github.sha }} georgeestav/configserver:latest
+          docker tag georgeestav/config-server:${{ github.sha }} georgeestav/configserver:latest
           
-          docker push georgeestav/configserver:${{ github.sha }}
-          docker push georgeestav/configserver:latest
+          docker push georgeestav/config-server:${{ github.sha }}
+          docker push georgeestav/config-server:latest
