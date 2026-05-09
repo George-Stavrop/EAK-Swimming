@@ -8,4 +8,3 @@ global:
   otelExporterEndPoint: http://tempo-grafana-tempo-distributor:4318
   otelMetricsExporter: none
   otelLogsExporter: none
-  kafkaBrokerURL: kafka-controller-0.kafka-controller-headless.default.svc.cluster.local:9092

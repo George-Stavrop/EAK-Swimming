@@ -6,11 +6,11 @@ A microservices-based backend system for managing a swimming club. Built with Sp
 
 ## Features
 
-- **Membership Management** — Register members, track medical certificates (cardio & derma)
+- **Membership Management** — Register members, track medical certificates
 - **Subscription Management** — Create and renew subscriptions, automatic expiry notifications via email
 - **Access Control** — Issue access cards, validate entry based on active subscription
 - **Email Notifications** — Automated emails for new memberships, expiring and expired subscriptions
-- **Full Observability** — Distributed tracing, metrics, and log aggregation via Grafana stack
+- **Observability** — Distributed tracing, metrics, and log aggregation via Grafana stack
 - **Security** — OAuth2/JWT authentication via Keycloak
 
 ---
@@ -19,15 +19,18 @@ A microservices-based backend system for managing a swimming club. Built with Sp
 
 The system is composed of the following services:
 
-| Service | Description | Port |
-|---|---|---|
+| Service | Description                    | Port |
+|---|--------------------------------|---|
 | `config-server` | Centralized configuration server | 8071 |
-| `eureka-server` | Service discovery | 8070 |
+| `eureka-server` | Service discovery              | 8070 |
 | `gateway-server` | API Gateway with OAuth2 security | 8072 |
 | `membership-service` | Member and membership management | 8080 |
-| `subscription-service` | Subscription lifecycle management | 8090 |
+| `subscription-service` | Subscription management        | 8090 |
 | `access-service` | Access card and entry validation | 9000 |
 | `message-service` | Email notifications via RabbitMQ | 9010 |
+
+
+### Architecture Image ###
 
 ### Communication
 
@@ -79,10 +82,10 @@ The system is composed of the following services:
 
 **Development** — Lightweight, no MySQL/Keycloak, all ports exposed, security disabled
 ```bash
-docker compose -f docker-compose/dev/compose-dev.yml up
+docker compose -f docker-compose/dev/compose-dev.yml up -d
 ```
 
-**Production**
+**Production** — With MySQL, Keycloak, services only accessed through the Gateway server
 ```bash
 docker compose -f docker-compose/default/compose.yml up
 ```
@@ -93,11 +96,32 @@ docker compose -f docker-compose/default/compose.yml \
                -f docker-compose/default/compose-observability.yml up
 ```
 
+## API Testing (Postman)
+
+Import the collection from the `postman/` folder to explore and test all available endpoints.
+
+| File | Description |
+|---|---|
+| `EAK-Swimming.postman_collection.json` | All requests |
+
+The collection contains 5 folders:
+
+| Folder | Description |
+|---|---|
+| `Membership` | Direct access to membership-service (dev only) |
+| `Subscription` | Direct access to subscription-service (dev only) |
+| `Access` | Direct access to access-service (dev only) |
+| `gatewayserver_noAuth` | All services via Gateway — no auth (dev only) |
+| `gatewayserver_auth` | All services via Gateway — Keycloak Auth Code Flow (production) |
+
+> For `gatewayserver_auth`: open the folder → Authorization → **Get New Access Token**.  
+> You will be redirected to Keycloak. Sign in with:  
+> **Username:** grammateas1 | **Password:** 12345
+
+
 ---
 
 ## API Documentation (Swagger UI)
-
-Available in development mode after startup:
 
 | Service | URL |
 |---|---|
@@ -105,28 +129,14 @@ Available in development mode after startup:
 | subscription-service | http://localhost:8090/swagger-ui/index.html |
 | access-service | http://localhost:9000/swagger-ui/index.html |
 
-> In production mode, all requests go through the API Gateway at `http://localhost:8072`
 
 ---
 
-## Observability
-
-After starting with the observability profile, access Grafana at:
-
-```
-http://localhost:3000
-```
-
-> No login required (anonymous access enabled)
-
-![Grafana Dashboard](docs/screenshots/grafana.png)
-
----
 
 ## Key Flows
 
 ### Member Registration
-1. `POST /api/memberships` → creates Member + Membership
+1. `POST /api/create` → creates Member + Membership
 2. Publishes event to RabbitMQ
 3. `message-service` sends welcome email
 
@@ -136,14 +146,13 @@ http://localhost:3000
 3. Finds subscriptions expired yesterday → sends expired email
 
 ### Access Validation
-1. `GET /api/access/can-enter/{accessCardNumber}`
+1. `GET /api/can-enter/{accessCardNumber}`
 2. Fetches access card → calls subscription-service via Feign
-3. Returns entry permission based on active subscription
+3. Grants or refuses access depending on if the Subscription is active or not
 
 ---
 
 ## Project Structure
-
 ```
 EAK-Swimming/
 ├── membership-service/
@@ -164,6 +173,20 @@ EAK-Swimming/
 └── mysql/
     └── init.sql
 ```
+--- 
+
+## Observability
+
+After starting with the observability profile, access Grafana at:
+
+```
+http://localhost:3000
+```
+
+> No login required (anonymous access enabled)
+
+![Grafana Dashboard](docs/screenshots/grafana.png)
+
 
 ---
 
@@ -180,3 +203,8 @@ Each service has its own GitHub Actions workflow that triggers on changes to its
 ## Author
 
 George Stavropoulos — [GitHub](https://github.com/George-Stavrop)
+
+
+## License
+
+This project is created for educational and portfolio purposes.

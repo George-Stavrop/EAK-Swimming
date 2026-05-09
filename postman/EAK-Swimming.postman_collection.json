@@ -1,0 +1,684 @@
+{
+	"info": {
+		"_postman_id": "e820be7e-fe44-4470-b7a3-42c226b85159",
+		"name": "EAK-Swimming",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31682298"
+	},
+	"item": [
+		{
+			"name": "Membership",
+			"item": [
+				{
+					"name": "CreateMembership",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "nl",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Giorgos Papadopoulos\",\n    \"email\": \"giorgosPap@example.com\",\n    \"mobileNumber\": \"6970082744\",\n    \"cardioCertExpiry\": \"2026-08-01\",\n    \"dermaCertExpiry\": \"2026-08-01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}:8080/api/create",
+							"host": [
+								"{{localhost}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetMembership",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}:8080/api/fetch?mobileNumber=6970082744",
+							"host": [
+								"{{localhost}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"fetch"
+							],
+							"query": [
+								{
+									"key": "mobileNumber",
+									"value": "6970082744"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateMembership",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Giorgos Papadopoulos\",\n    \"email\": \"giorgosPap@example.com\",\n    \"mobileNumber\": \"6970082741\",\n    \"cardioCertExpiry\": \"2026-08-01\",\n    \"dermaCertExpiry\": \"2026-08-01\",\n    \"membershipDto\": {\n        \"membershipNumber\": 1028191648,\n        \"membershipType\": \"General Access\",\n        \"facilityName\": \"EAK Volos - 1\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}:8080/api/update",
+							"host": [
+								"{{localhost}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteMembership",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}:8080/api/delete?mobileNumber=6970082744",
+							"host": [
+								"{{localhost}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "mobileNumber",
+									"value": "6970082744"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FetchCustomerDetails",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}:8080/api/fetchCustomerDetails?mobileNumber=6970082744",
+							"host": [
+								"{{localhost}}"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"fetchCustomerDetails"
+							],
+							"query": [
+								{
+									"key": "mobileNumber",
+									"value": "6970082744"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Run with: docker compose -f docker-compose/dev/compose-dev.yml up  \nDirect access to the service"
+		},
+		{
+			"name": "Subscription",
+			"item": [
+				{
+					"name": "CreateSubscription",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}:8090/api/create?mobileNumber=6970082744",
+							"host": [
+								"{{localhost}}"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"create"
+							],
+							"query": [
+								{
+									"key": "mobileNumber",
+									"value": "6970082744"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSubscription",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}:8090/api/fetch?mobileNumber=6970082744",
+							"host": [
+								"{{localhost}}"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"fetch"
+							],
+							"query": [
+								{
+									"key": "mobileNumber",
+									"value": "6970082744"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RenewSubscription",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}:8090/api/update?mobileNumber=6970082744",
+							"host": [
+								"{{localhost}}"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"update"
+							],
+							"query": [
+								{
+									"key": "mobileNumber",
+									"value": "6970082744"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSubscription",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}:8090/api/delete?mobileNumber=6970082744",
+							"host": [
+								"{{localhost}}"
+							],
+							"port": "8090",
+							"path": [
+								"api",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "mobileNumber",
+									"value": "6970082744"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Run with: docker compose -f docker-compose/dev/compose-dev.yml up  \nDirect access to the service"
+		},
+		{
+			"name": "Access",
+			"item": [
+				{
+					"name": "CreateAccessCard",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}:9000/api/create?mobileNumber=6970082744",
+							"host": [
+								"{{localhost}}"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"create"
+							],
+							"query": [
+								{
+									"key": "mobileNumber",
+									"value": "6970082744"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAccessCard",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}:9000/api/fetch?mobileNumber=6970082744",
+							"host": [
+								"{{localhost}}"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"fetch"
+							],
+							"query": [
+								{
+									"key": "mobileNumber",
+									"value": "6970082744"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CanEnter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}:9000/api/can-enter/100676106536",
+							"host": [
+								"{{localhost}}"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"can-enter",
+								"100676106536"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ToggleAccessCard",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}:9000/api/toggle?mobileNumber=6970082744",
+							"host": [
+								"{{localhost}}"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"toggle"
+							],
+							"query": [
+								{
+									"key": "mobileNumber",
+									"value": "6970082744"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteAccessCard",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}:9000/api/delete?mobileNumber=6970082744",
+							"host": [
+								"{{localhost}}"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "mobileNumber",
+									"value": "6970082744"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Run with: docker compose -f docker-compose/dev/compose-dev.yml up  \nDirect access to the service"
+		},
+		{
+			"name": "gatewayserver_noAuth",
+			"item": [
+				{
+					"name": "CreateMembership",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Kwstas Peristeropoulos\",\n    \"email\": \"kwstasPer@example.com\",\n    \"mobileNumber\": \"6970082745\",\n    \"cardioCertExpiry\": \"2026-08-01\",\n    \"dermaCertExpiry\": \"2026-08-01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}:8072/eak/membership/api/create",
+							"host": [
+								"{{localhost}}"
+							],
+							"port": "8072",
+							"path": [
+								"eak",
+								"membership",
+								"api",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateSubscription",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}:8072/eak/subscription/api/create?mobileNumber=6970082745",
+							"host": [
+								"{{localhost}}"
+							],
+							"port": "8072",
+							"path": [
+								"eak",
+								"subscription",
+								"api",
+								"create"
+							],
+							"query": [
+								{
+									"key": "mobileNumber",
+									"value": "6970082745"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateAccessCard",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}:8072/eak/access/api/create?mobileNumber=6970082745",
+							"host": [
+								"{{localhost}}"
+							],
+							"port": "8072",
+							"path": [
+								"eak",
+								"access",
+								"api",
+								"create"
+							],
+							"query": [
+								{
+									"key": "mobileNumber",
+									"value": "6970082745"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "**Dev - Via Gateway (No Security)**  \n\\- Run with: docker compose -f docker-compose/dev/compose-dev.yml up  \n\\- No authentication required. All services accessible through the Gateway."
+		},
+		{
+			"name": "gatewayserver_auth",
+			"item": [
+				{
+					"name": "CreateMembership_AuthCode",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Giorgos Papadopoulos\",\n    \"email\": \"giorgosPap@example.com\",\n    \"mobileNumber\": \"6970082745\",\n    \"cardioCertExpiry\": \"2026-08-01\",\n    \"dermaCertExpiry\": \"2026-08-01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}:8072/eak/membership/api/create",
+							"host": [
+								"{{localhost}}"
+							],
+							"port": "8072",
+							"path": [
+								"eak",
+								"membership",
+								"api",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateSubscription_AuthCode",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}:8072/eak/subscription/api/create?mobileNumber=6970082745",
+							"host": [
+								"{{localhost}}"
+							],
+							"port": "8072",
+							"path": [
+								"eak",
+								"subscription",
+								"api",
+								"create"
+							],
+							"query": [
+								{
+									"key": "mobileNumber",
+									"value": "6970082745"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateAccessCard_AuthCode",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}:8072/eak/access/api/create?mobileNumber=6970082745",
+							"host": [
+								"{{localhost}}"
+							],
+							"port": "8072",
+							"path": [
+								"eak",
+								"access",
+								"api",
+								"create"
+							],
+							"query": [
+								{
+									"key": "mobileNumber",
+									"value": "6970082745"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "**Production - Via Gateway (Keycloak Auth)**\n\n  \nRun with: docker compose -f docker-compose/default/compose.yml up\n\n\\- Click Authorization → Get New Access Token in this folder before sending requests.  \n\\- You will be redirected to Keycloak — sign in with the registered grammateas1 user:\n\n_Username_: grammateas1  \n_Password_: 12345",
+			"auth": {
+				"type": "oauth2",
+				"oauth2": [
+					{
+						"key": "refreshRequestParams",
+						"value": [],
+						"type": "any"
+					},
+					{
+						"key": "tokenRequestParams",
+						"value": [],
+						"type": "any"
+					},
+					{
+						"key": "authRequestParams",
+						"value": [],
+						"type": "any"
+					},
+					{
+						"key": "tokenName",
+						"value": "authcode_accestoken",
+						"type": "string"
+					},
+					{
+						"key": "challengeAlgorithm",
+						"value": "S256",
+						"type": "string"
+					},
+					{
+						"key": "useBrowser",
+						"value": true,
+						"type": "boolean"
+					},
+					{
+						"key": "state",
+						"value": "ew34er-dh347hr-hd7647",
+						"type": "string"
+					},
+					{
+						"key": "scope",
+						"value": "openid email profile",
+						"type": "string"
+					},
+					{
+						"key": "grant_type",
+						"value": "authorization_code",
+						"type": "string"
+					},
+					{
+						"key": "clientSecret",
+						"value": "**********",
+						"type": "string"
+					},
+					{
+						"key": "clientId",
+						"value": "eak-grammateia-ac",
+						"type": "string"
+					},
+					{
+						"key": "authUrl",
+						"value": "http://localhost:7080/realms/master/protocol/openid-connect/auth",
+						"type": "string"
+					},
+					{
+						"key": "addTokenTo",
+						"value": "header",
+						"type": "string"
+					},
+					{
+						"key": "client_authentication",
+						"value": "body",
+						"type": "string"
+					},
+					{
+						"key": "accessTokenUrl",
+						"value": "http://localhost:7080/realms/master/protocol/openid-connect/token",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}
