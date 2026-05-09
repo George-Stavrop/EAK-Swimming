@@ -11,6 +11,8 @@ services:
       timeout: 5s
       retries: 10
       start_period: 5s
+    volumes:
+      - rabbit_data:/var/lib/rabbitmq
     extends:
       file: ../common-config.yml
       service: network-deploy-service
@@ -18,7 +20,7 @@ services:
 
 
   configserver:
-    image: "georgeestav/configserver:latest"
+    image: "georgeestav/config-server:latest"
     container_name: configserver
     ports:
       - "8071:8071"
@@ -33,7 +35,7 @@ services:
       service: microservice-base-config
 
   eurekaserver:
-    image: "georgeestav/eurekaserver:latest"
+    image: "georgeestav/eureka-server:latest"
     container_name: eurekaserver
     ports:
       - "8070:8070"
@@ -173,6 +175,8 @@ services:
       GMAIL_PW: "iolalpjqdbpiipmv"
 
 
+volumes:
+  rabbit_data:
 
 networks:
   eakswimming:

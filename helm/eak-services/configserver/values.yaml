@@ -9,7 +9,7 @@ appName: configserver
 replicaCount: 1
 
 image:
-  repository: georgeestav/configserver
+  repository: georgeestav/config-server
   tag: v1.1
 
 containerPort: 8071

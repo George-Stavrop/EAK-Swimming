@@ -9,7 +9,7 @@ appName: eurekaserver
 replicaCount: 1
 
 image:
-  repository: georgeestav/eurekaserver
+  repository: georgeestav/eureka-server
   tag: v1.1
 
 containerPort: 8070
