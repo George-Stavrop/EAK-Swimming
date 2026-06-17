@@ -2,7 +2,6 @@
 
 A microservices-based backend system for managing a swimming club. Built with Spring Boot and Spring Cloud, featuring full observability, event-driven communication, and containerized deployment.
 
----
 
 ## Features
 
@@ -13,7 +12,6 @@ A microservices-based backend system for managing a swimming club. Built with Sp
 - **Observability** — Distributed tracing, metrics, and log aggregation via Grafana stack
 - **Security** — OAuth2/JWT authentication via Keycloak
 
----
 
 
 The system is composed of the following services:
@@ -34,7 +32,6 @@ The system is composed of the following services:
 - **Synchronous** — REST via OpenFeign (access-service → subscription-service, subscription-service → membership-service)
 - **Asynchronous** — Event-driven via RabbitMQ + Spring Cloud Stream (membership/subscription → message-service)
 
----
 
 ## Tech Stack
 
@@ -114,7 +111,6 @@ The collection contains 5 folders:
 > **Username:** grammateas1 | **Password:** 12345
 
 
----
 
 ## API Documentation (Swagger UI)
 
@@ -145,7 +141,7 @@ The collection contains 5 folders:
 2. Fetches access card → calls subscription-service via Feign
 3. Grants or refuses access depending on if the Subscription is active or not
 
----
+
 
 ## Project Structure
 ```
@@ -168,22 +164,9 @@ EAK-Swimming/
 └── mysql/
     └── init.sql
 ```
---- 
-
-## Observability
-
-After starting with the observability profile, access Grafana at:
-
-```
-http://localhost:3000
-```
-
-> No login required (anonymous access enabled)
-
-![Grafana Dashboard](docs/screenshots/grafana.png)
 
 
----
+
 
 ## CI/CD
 
