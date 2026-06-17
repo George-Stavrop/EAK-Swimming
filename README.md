@@ -15,7 +15,6 @@ A microservices-based backend system for managing a swimming club. Built with Sp
 
 ---
 
-## Architecture
 
 The system is composed of the following services:
 
@@ -30,8 +29,6 @@ The system is composed of the following services:
 | `message-service` | Email notifications via RabbitMQ | 9010 |
 
 
-### Architecture Image ###
-
 ### Communication
 
 - **Synchronous** — REST via OpenFeign (access-service → subscription-service, subscription-service → membership-service)
@@ -42,19 +39,17 @@ The system is composed of the following services:
 ## Tech Stack
 
 ### Backend
-- Java 21
-- Spring Boot 3.5
-- Spring Cloud 2025 (Config, Eureka, Gateway, OpenFeign, Stream)
-- Spring Data JPA
-- Spring Security + OAuth2 Resource Server
+- Java 21, Spring Boot 3.5
+- Spring Cloud 2025 (Config, Eureka, Gateway, OpenFeign)
 - Resilience4j (Circuit Breaker)
-- MapStruct
+- Spring Data JPA, Hibernate
+- Spring Security + OAuth2 Resource Server (JWT via Keycloak)
 - Springdoc OpenAPI (Swagger UI)
 
 ### Infrastructure
 - MySQL 8 (production)
 - H2 (development)
-- RabbitMQ
+- RabbitMQ (via Spring Cloud Stream)
 - Keycloak 26
 
 ### Observability
